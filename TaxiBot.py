@@ -1,8 +1,8 @@
 import random
-import gymnasium as gym # type: ignore
-import numpy as np # type: ignore
+import gymnasium as gym
+import numpy as np
 
-env = gym.make('Taxi-v3', render_mode=None)
+env = gym.make('Taxi-v3',render_mode='ansi')
 
 alpha = 0.9
 gamma = 0.95
@@ -23,28 +23,41 @@ def choose_action(state):
 for episode in range(num_episodes):
     state, _ = env.reset()
     done = False
+
     for step in range(max_steps):
         action = choose_action(state)
-        next_state, reward, done, truncated, _ = env.step(action)
+
+        next_state, reward, done, truncated, info = env.step(action)
+
         old_value = q_table[state, action]
         next_max = np.max(q_table[next_state, :])
+
         q_table[state, action] = (1 - alpha) * old_value + alpha * (reward + gamma * next_max)
+
         state = next_state
+
         if done or truncated:
             break
+
     epsilon = max(min_epsilon, epsilon * epsilon_decay)
 
-# Enable rendering to visualize the results
 env = gym.make('Taxi-v3', render_mode='human')
 
 for episode in range(5):
     state, _ = env.reset()
     done = False
-    while not done:
-        action = choose_action(state)
-        state, reward, done, truncated, _ = env.step(action)
-        try:
+
+    print('Episode', episode)
+
+    for step in range(max_steps):
+        env.render()
+        action = np.argmax(q_table[state, :])
+        next_state, reward, done, truncated, info = env.step(action)
+        state = next_state
+
+        if done or truncated:
             env.render()
-        except pygame.error:
-            print("Pygame window closed unexpectedly.")
+            print('Finished episode', episode, 'with reward', reward)
             break
+
+env.close()
