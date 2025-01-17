@@ -47,11 +47,11 @@ def run(episodes, is_training=True, render=False, initial_config=None):
         with open('taxi.pkl', 'rb') as f:
             q = pickle.load(f)
 
-    learning_rate_a = 0.9
+    learning_rate_a = 0.9           
     discount_factor_g = 0.9
     epsilon = 1
     epsilon_decay_rate = 0.0001
-    rng = np.random.default_rng()
+    rng = np.random.default_rng()   
     rewards_per_episode = np.zeros(episodes)
 
     for i in range(episodes):
@@ -99,9 +99,9 @@ if __name__ == '__main__':
     # Define initial configuration
     # Locations: 0=Red, 1=Green, 2=Yellow, 3=Blue
     initial_config = {
-        'taxi_row': 0,        # 0-4 (top to bottom)
-        'taxi_col': 0,        # 0-4 (left to right)
-        'passenger_loc': 3,   # 0=Red location
+        'taxi_row': 2,        # 0-4 (top to bottom)
+        'taxi_col': 2,        # 0-4 (left to right)
+        'passenger_loc': 1,   # 0=Red location
         'destination': 2      # 2=Yellow location
     }
 
@@ -111,4 +111,4 @@ if __name__ == '__main__':
 
     # Evaluation phase with rendering
     print("Starting evaluation...")
-    run(1, is_training=False, render=True, initial_config=initial_config)
+    run(3, is_training=False, render=True, initial_config=initial_config)

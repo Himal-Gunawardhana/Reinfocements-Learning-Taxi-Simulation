@@ -13,7 +13,7 @@ min_epsilon = 0.01  # minimum value of epsilon (at least 1% of the randomness)
 num_episodes = 10000
 max_steps = 100
 
-q_table = np.zeros((env.observation_space.n, env.action_space.n))
+q_table = np.zeros((env.observation_space.n, env.action_space.n)) # 500*6 25*4*5
 
 def choose_action(state):
     if random.uniform(0, 1) < epsilon:
